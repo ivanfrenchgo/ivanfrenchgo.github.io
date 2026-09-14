@@ -4,9 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<!-- ===== EDIT: title + description (these show up in Google results) ===== -->
-<title>Ivan French — Portfolio</title>
-<meta name="description" content="Ivan French — Entrepreneur, working across AI, technology, and social impact">
+<title>Ivan French — AI, Technology & Impact</title>
+<meta name="description" content="Ivan French — Entrepreneur exploring AI, technology, and impact.">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -41,7 +40,6 @@ a:hover{border-bottom-color:var(--accent)}
 .skip{position:absolute;left:-9999px}
 .skip:focus{left:1rem;top:1rem;background:var(--ink);color:var(--paper);padding:.5rem .9rem;z-index:10}
 
-/* ---------- page frame: sticky rail + scrolling content ---------- */
 .page{
   max-width:1120px;
   margin:0 auto;
@@ -59,7 +57,6 @@ a:hover{border-bottom-color:var(--accent)}
   overflow:hidden;margin-bottom:1.5rem;
   font-family:"Newsreader",serif;font-size:2rem;color:var(--accent);
 }
-.portrait img{width:100%;height:100%;object-fit:cover;display:block}
 
 .rail h1{
   font-family:"Newsreader",serif;
@@ -85,7 +82,6 @@ a:hover{border-bottom-color:var(--accent)}
 .elsewhere a{color:var(--muted);border-bottom-color:var(--rule)}
 .elsewhere a:hover{color:var(--accent);border-bottom-color:var(--accent)}
 
-/* ---------- content ---------- */
 main{max-width:var(--measure)}
 section{margin-bottom:4.5rem}
 section h2{
@@ -95,7 +91,6 @@ section h2{
 p{margin:0 0 1.1rem}
 .lede{font-family:"Newsreader",serif;font-size:1.3rem;line-height:1.5;color:var(--ink)}
 
-/* an entry = a dated thing you did. the left column carries the when/where. */
 .entry{
   display:grid;grid-template-columns:8.5rem minmax(0,1fr);
   gap:1.75rem;margin-bottom:2.25rem;
@@ -105,22 +100,20 @@ p{margin:0 0 1.1rem}
 .entry p{margin:0 0 .6rem;font-size:.97rem;color:#3c464e}
 .entry .where{color:var(--muted);font-weight:400}
 
-.tags{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.5rem}
-.tags span{
-  font-size:.78rem;color:var(--muted);
-  background:var(--accent-wash);padding:.12rem .55rem;border-radius:3px;
+.contact-link{
+  display:inline-block;
+  margin-top:.25rem;
+  padding:.55rem .9rem;
+  border:1px solid var(--accent);
+  border-radius:3px;
 }
-
-details{margin-top:.6rem;font-size:.95rem}
-summary{cursor:pointer;color:var(--accent);font-size:.9rem;width:fit-content}
-details p{margin-top:.7rem;color:#3c464e}
+.contact-link:hover{background:var(--accent-wash)}
 
 footer{
   border-top:1px solid var(--rule);padding-top:1.25rem;
   font-size:.85rem;color:var(--muted);
 }
 
-/* ---------- mobile ---------- */
 @media (max-width:800px){
   .page{grid-template-columns:1fr;gap:3rem;padding:2.5rem 1.5rem 3rem}
   .rail{position:static}
@@ -136,15 +129,12 @@ footer{
 <a class="skip" href="#main">Skip to content</a>
 
 <div class="page">
-
-  <!-- ================= LEFT RAIL ================= -->
   <aside class="rail">
-    <!-- Put a photo at assets/photo.jpg. Until then the initials show. -->
-    <div class="portrait">IF<img src="assets/photo.jpg" alt="Ivan French" onerror="this.remove()"></div>
+    <div class="portrait" aria-label="Ivan French initials">IF</div>
 
     <h1>Ivan French</h1>
-    <p class="role">Short role line — e.g. “Economics student · Buenos Aires”</p>
-    <p class="status">Right now: one sentence on what you're working on this month.</p>
+    <p class="role">Entrepreneur exploring AI, technology, and impact.</p>
+    <p class="status">Currently exploring how AI can create broader benefits while reducing the risks that come with increasingly capable systems.</p>
 
     <nav aria-label="Sections">
       <a href="#about">About</a>
@@ -154,44 +144,41 @@ footer{
     </nav>
 
     <ul class="elsewhere">
-      <li><a href="https://github.com/ivanfrenchgo">GitHub</a></li>
-      <li><a href="mailto:you@example.com">Email</a></li>
-      <li><a href="https://linkedin.com/in/your-handle">LinkedIn</a></li>
-      <li><a href="assets/cv.pdf">CV</a></li>
+      <li><a href="https://www.linkedin.com/in/ivanfrench/" target="_blank" rel="noopener noreferrer">LinkedIn</a></li>
     </ul>
   </aside>
 
-  <!-- ================= CONTENT ================= -->
   <main id="main">
-
     <section id="about">
       <h2>About</h2>
-      <p class="lede">One or two sentences that say who you are and what you care about. Write it the way you'd say it out loud.</p>
-      <p>Then a paragraph with the concrete details: what you study or do, where, and the two or three things you're actually good at. Link to <a href="#projects">the work</a> rather than describing it twice.</p>
+      <p class="lede">I’m an entrepreneur interested in what happens when powerful technologies meet problems that matter. I care about making AI useful to more people, while also taking its risks and social consequences seriously.</p>
+      <p>My background spans humanitarian medicine, finance, operations, and company building. That mix has made me especially drawn to neglected problems: the ones that fall between disciplines, markets, and institutions. I like turning unconventional ideas into practical projects and working with people who care as much about consequences as possibilities.</p>
     </section>
 
     <section id="projects">
       <h2>Projects</h2>
 
       <article class="entry">
-        <div class="when">2026<br>Personal</div>
+        <div class="when">Exploring</div>
         <div>
-          <h3>Project name</h3>
-          <p>What it does and why you built it, in two lines. Say what's interesting about it, not what folder structure it has.</p>
-          <div class="tags"><span>Python</span><span>Data</span></div>
-          <p style="margin-top:.6rem"><a href="#">Repo</a> · <a href="#">Live demo</a></p>
+          <h3>Responsible AI</h3>
+          <p>I’m exploring practical ways to reduce the risks created by increasingly capable AI systems, particularly ideas that connect technical questions with institutions, incentives, and real-world deployment.</p>
         </div>
       </article>
 
       <article class="entry">
-        <div class="when">2025<br>Coursework</div>
+        <div class="when">Exploring</div>
         <div>
-          <h3>Second project</h3>
-          <p>Same shape as above. Keep three to five of these — your best ones, not all of them.</p>
-          <details>
-            <summary>More detail</summary>
-            <p>Use this fold for the long version: methods, results, what you'd do differently. Delete the whole &lt;details&gt; block if you don't need it.</p>
-          </details>
+          <h3>Technology for overlooked problems</h3>
+          <p>Many important problems receive too little attention because they sit outside obvious markets or institutional mandates. I’m interested in how technology can make some of those problems more tractable and easier to act on.</p>
+        </div>
+      </article>
+
+      <article class="entry">
+        <div class="when">Exploring</div>
+        <div>
+          <h3>AI and human decision-making</h3>
+          <p>AI will change how people and organizations make decisions. I’m interested in approaches that expand what people can do without removing human judgment, responsibility, or accountability.</p>
         </div>
       </article>
     </section>
@@ -200,33 +187,49 @@ footer{
       <h2>Experience</h2>
 
       <article class="entry">
-        <div class="when">2025 — now</div>
+        <div class="when">Finance</div>
         <div>
-          <h3>Role title <span class="where">· Organisation</span></h3>
-          <p>One line on what you do there and one measurable thing you did.</p>
+          <h3>Investment Banking <span class="where">· Morgan Stanley, New York</span></h3>
+          <p>Mergers and acquisitions.</p>
         </div>
       </article>
 
       <article class="entry">
-        <div class="when">2023 — 2025</div>
+        <div class="when">Technology</div>
         <div>
-          <h3>Degree or earlier role <span class="where">· Institution</span></h3>
-          <p>Keep it short. Anyone who wants the full version will open the CV.</p>
+          <h3>General Manager <span class="where">· Uber</span></h3>
+          <p>I helped launch and scale Uber’s operations, building the team and processes needed to support its growth.</p>
+        </div>
+      </article>
+
+      <article class="entry">
+        <div class="when">Building</div>
+        <div>
+          <h3>Co-founder <span class="where">· Entrepreneurship</span></h3>
+          <p>I co-founded two companies and learned the less glamorous but more important parts of building: testing assumptions, finding the right people, adapting quickly, and getting things done with limited resources.</p>
+        </div>
+      </article>
+
+      <article class="entry">
+        <div class="when">Humanitarian</div>
+        <div>
+          <h3>Physician <span class="where">· Médecins Sans Frontières</span></h3>
+          <p>As a physician with MSF, I worked in the Central African Republic, Chad, Haiti, the Philippines, Congo, and other challenging contexts. I remain involved and continue contributing to MSF’s work today.</p>
         </div>
       </article>
     </section>
 
     <section id="contact">
       <h2>Contact</h2>
-      <p>Best way to reach me: <a href="mailto:you@example.com">you@example.com</a>. Based in Buenos Aires, Argentina.</p>
+      <p>I’m especially interested in hearing from people building thoughtful, ambitious projects around AI safety and social impact. If that sounds like you, I’d be glad to connect.</p>
+      <a class="contact-link" href="https://www.linkedin.com/in/ivanfrench/" target="_blank" rel="noopener noreferrer">Message me on LinkedIn</a>
     </section>
 
-    <footer>© 2026 Ivan French · Last updated September 2026</footer>
+    <footer>Ivan French</footer>
   </main>
 </div>
 
 <script>
-// Highlights the section you're currently reading in the left nav.
 const links = [...document.querySelectorAll('.rail nav a')];
 const io = new IntersectionObserver(entries => {
   entries.forEach(e => {
