@@ -286,11 +286,11 @@ async function loadWork() {
       .filter(issue => issue.title.startsWith('[Work] '))
       .map(issue => {
         const documentField = clean(section(issue.body || '', 'Document'));
-        const documentMatch = documentField.match(/\\[[^\\]]+\\]\\((https:\\/\\/[^)]+)\\)/i);
+        const documentMatch = documentField.match(/\[[^\]]+\]\((https:\/\/[^)]+)\)/i);
         const externalField = clean(section(issue.body || '', 'Optional external link'));
-        const externalMatch = externalField.match(/https:\\/\\/[^\\s)]+/i);
+        const externalMatch = externalField.match(/https:\/\/[^\s)]+/i);
         return {
-          title: issue.title.replace(/^\\[Work\\]\\s*/, ''),
+          title: issue.title.replace(/^\[Work\]\s*/, ''),
           category: clean(section(issue.body || '', 'Category')),
           description: clean(section(issue.body || '', 'Short description')),
           documentUrl: safeUrl(documentMatch ? documentMatch[1] : ''),
