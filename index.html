@@ -288,14 +288,16 @@ async function loadWork() {
       .map(issue => {
         const documentField = clean(section(issue.body || '', 'Document'));
         const documentMatch = documentField.match(/\[[^\]]+\]\((https:\/\/[^)]+)\)/i);
+        const attachmentMatch = (issue.body || '').match(/\[[^\]]+\]\((https:\/\/github\.com\/user-attachments\/[^)]+)\)/i);
         const externalField = clean(section(issue.body || '', 'Optional external link'));
         const externalMatch = externalField.match(/https:\/\/[^\s)]+/i);
         return {
           title: issue.title.replace(/^\[Work\]\s*/, ''),
           category: clean(section(issue.body || '', 'Category')),
           description: clean(section(issue.body || '', 'Short description')),
-          documentUrl: safeUrl(documentMatch ? documentMatch[1] : ''),
-          externalUrl: safeUrl(externalMatch ? externalMatch[0] : '')
+          documentUrl: safeUrl(documentMatch ? documentMatch[1] : (attachmentMatch ? attachmentMatch[1] : '')),
+          externalUrl: safeUrl(externalMatch ? externalMatch[0] : ''),
+          issueUrl: safeUrl(issue.html_url || '')
         };
       });
 
@@ -329,14 +331,14 @@ async function loadWork() {
         article.appendChild(description);
       }
 
-      const linkUrl = item.documentUrl || item.externalUrl;
+      const linkUrl = item.documentUrl || item.externalUrl || item.issueUrl;
       if (linkUrl) {
         const link = document.createElement('a');
         link.className = 'work-link';
         link.href = linkUrl;
         link.target = '_blank';
         link.rel = 'noopener noreferrer';
-        link.textContent = item.documentUrl ? 'Read the document →' : 'View the work →';
+        link.textContent = item.documentUrl ? 'Read the document →' : (item.externalUrl ? 'View the work →' : 'Read the work →');
         article.appendChild(link);
       }
 
