@@ -21,31 +21,51 @@ iframe{width:100%;flex:1;border:0;background:white}
 <body>
 <header>
   <a href="/#work">← Back to Work &amp; Research</a>
-  <div class="actions"><a id="open-file" href="#" target="_blank" rel="noopener noreferrer">Open or download PDF</a></div>
+  <div class="actions"><a id="open-file" href="#" target="_blank" rel="noopener noreferrer" hidden>Open or download PDF</a></div>
 </header>
-<iframe id="pdf-frame" title="PDF document"></iframe>
-<p id="message" class="message" hidden>This document could not be displayed. Use “Open or download PDF” above.</p>
+<iframe id="pdf-frame" title="PDF document" hidden></iframe>
+<p id="message" class="message">Loading document…</p>
 <script>
-const source = new URLSearchParams(location.search).get('src');
+const issue = new URLSearchParams(location.search).get('issue');
 const frame = document.getElementById('pdf-frame');
 const openFile = document.getElementById('open-file');
 const message = document.getElementById('message');
-let valid = '';
-try {
-  const url = new URL(source);
-  const githubAttachment = url.protocol === 'https:' && url.hostname === 'github.com' && url.pathname.startsWith('/user-attachments/files/');
-  const localPdf = url.origin === location.origin && url.pathname.toLowerCase().endsWith('.pdf');
-  if (githubAttachment || localPdf) valid = url.href;
-} catch {}
-if (valid) {
-  frame.src = valid;
-  openFile.href = valid;
-} else {
+
+async function loadDocument() {
+  if (!/^\d+$/.test(issue || '')) throw new Error('Invalid publication');
+  const response = await fetch('https://api.github.com/repos/ivanfrenchgo/ivanfrenchgo.github.io/issues/' + issue, {
+    headers: { Accept: 'application/vnd.github+json' }
+  });
+  if (!response.ok) throw new Error('Publication unavailable');
+  const data = await response.json();
+  const body = data.body || '';
+  const documentSection = body.match(/### Document\s*\n+([\s\S]*?)(?=\n### |$)/i);
+  const searchText = documentSection ? documentSection[1] + '\n' + body : body;
+  const links = [...searchText.matchAll(/\[[^\]]+\]\((https:\/\/[^)]+\.pdf(?:\?[^)]*)?)\)/gi)];
+  const attachment = links.map(match => match[1]).find(value => {
+    try {
+      const url = new URL(value);
+      return url.protocol === 'https:' &&
+        ((url.hostname === 'github.com' && url.pathname.startsWith('/user-attachments/')) ||
+         url.origin === location.origin);
+    } catch {
+      return false;
+    }
+  });
+  if (!attachment) throw new Error('No PDF attached');
+  frame.src = attachment;
+  openFile.href = attachment;
+  frame.hidden = false;
+  openFile.hidden = false;
+  message.hidden = true;
+}
+
+loadDocument().catch(() => {
   frame.hidden = true;
   openFile.hidden = true;
   message.hidden = false;
-  message.textContent = 'The document link is invalid or unavailable.';
-}
+  message.textContent = 'The PDF could not be found. Edit the publication and upload the PDF again in the Document field.';
+});
 </script>
 </body>
 </html>

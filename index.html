@@ -297,7 +297,8 @@ async function loadWork() {
           description: clean(section(issue.body || '', 'Short description')),
           documentUrl: safeUrl(documentMatch ? documentMatch[1] : (attachmentMatch ? attachmentMatch[1] : '')),
           externalUrl: safeUrl(externalMatch ? externalMatch[0] : ''),
-          issueUrl: safeUrl(issue.html_url || '')
+          issueUrl: safeUrl(issue.html_url || ''),
+          issueNumber: issue.number
         };
       });
 
@@ -331,7 +332,7 @@ async function loadWork() {
         article.appendChild(description);
       }
 
-      const linkUrl = item.documentUrl ? 'document.html?src=' + encodeURIComponent(item.documentUrl) : (item.externalUrl || item.issueUrl);
+      const linkUrl = item.documentUrl ? 'document.html?issue=' + encodeURIComponent(item.issueNumber) : (item.externalUrl || item.issueUrl);
       if (linkUrl) {
         const link = document.createElement('a');
         link.className = 'work-link';
