@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Manage Work & Research · Ivan French</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--paper:#faf9f6;--ink:#1b1f24;--muted:#5f6a72;--rule:#e3e2da;--accent:#2f6f66;--wash:#eaf1ee}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:"IBM Plex Sans",system-ui,sans-serif;font-size:17px;line-height:1.65}
+main{max-width:700px;margin:0 auto;padding:5rem 1.5rem}
+h1{font-family:"Newsreader",serif;font-size:2.2rem;font-weight:400;line-height:1.2;margin:0 0 .75rem}
+.lede{font-family:"Newsreader",serif;font-size:1.25rem}
+.steps{margin:2rem 0;padding:1.5rem;background:var(--wash);border-radius:5px}
+.steps ol{margin:0;padding-left:1.3rem}
+.steps li{margin:.45rem 0}
+.actions{display:flex;flex-wrap:wrap;gap:.8rem;margin:2rem 0}
+a{color:var(--accent)}
+.button{display:inline-block;padding:.65rem 1rem;border:1px solid var(--accent);border-radius:4px;text-decoration:none}
+.button.primary{background:var(--accent);color:white}
+.note{font-size:.9rem;color:var(--muted);border-top:1px solid var(--rule);padding-top:1.25rem;margin-top:2.5rem}
+</style>
+</head>
+<body>
+<main>
+  <h1>Manage Work &amp; Research</h1>
+  <p class="lede">Use this page whenever you want to publish a document on your website. No code editing is required.</p>
+
+  <div class="steps">
+    <ol>
+      <li>Click <strong>Add new work</strong> and sign in to GitHub if asked.</li>
+      <li>Write the document title after <strong>[Work]</strong>.</li>
+      <li>Complete the category and short description.</li>
+      <li>Drag the PDF into the Document box and wait for the link to appear.</li>
+      <li>Click <strong>Submit new issue</strong>. The item will appear automatically on your website.</li>
+    </ol>
+  </div>
+
+  <div class="actions">
+    <a class="button primary" href="https://github.com/ivanfrenchgo/ivanfrenchgo.github.io/issues/new?template=work.yml">Add new work</a>
+    <a class="button" href="https://github.com/ivanfrenchgo/ivanfrenchgo.github.io/issues?q=is%3Aissue%20author%3Aivanfrenchgo%20%22%5BWork%5D%22">Edit existing work</a>
+    <a class="button" href="/">View website</a>
+  </div>
+
+  <p class="note">Everything you submit is public. Edit an open issue to update an item. Close the issue when you want to remove it from the website.</p>
+</main>
+</body>
+</html>

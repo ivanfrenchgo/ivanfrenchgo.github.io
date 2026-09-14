@@ -109,6 +109,15 @@ p{margin:0 0 1.1rem}
 }
 .contact-link:hover{background:var(--accent-wash)}
 
+.work-list{display:grid;gap:1.5rem}
+.work-item{padding-bottom:1.5rem;border-bottom:1px solid var(--rule)}
+.work-item:last-child{border-bottom:0;padding-bottom:0}
+.work-item h3{font-size:1.02rem;font-weight:600;margin:0 0 .25rem;line-height:1.4}
+.work-meta{color:var(--muted);font-size:.82rem;margin-bottom:.55rem}
+.work-item p{font-size:.97rem;color:#3c464e;margin-bottom:.65rem}
+.work-link{font-size:.9rem}
+.work-state{color:var(--muted);font-size:.95rem}
+
 footer{
   border-top:1px solid var(--rule);padding-top:1.25rem;
   font-size:.85rem;color:var(--muted);
@@ -139,6 +148,7 @@ footer{
     <nav aria-label="Sections">
       <a href="#about">About</a>
       <a href="#projects">Projects</a>
+      <a href="#work">Work &amp; Research</a>
       <a href="#experience">Experience</a>
       <a href="#contact">Contact</a>
     </nav>
@@ -181,6 +191,14 @@ footer{
           <p>AI will change how people and organizations make decisions. I’m interested in approaches that expand what people can do without removing human judgment, responsibility, or accountability.</p>
         </div>
       </article>
+    </section>
+
+
+    <section id="work">
+      <h2>Work &amp; Research</h2>
+      <div id="work-list" class="work-list" aria-live="polite">
+        <p class="work-state">Loading published work…</p>
+      </div>
     </section>
 
     <section id="experience">
@@ -238,6 +256,103 @@ const io = new IntersectionObserver(entries => {
   });
 }, { rootMargin: '-20% 0px -70% 0px' });
 document.querySelectorAll('main section').forEach(s => io.observe(s));
+async function loadWork() {
+  const container = document.getElementById('work-list');
+  const api = 'https://api.github.com/repos/ivanfrenchgo/ivanfrenchgo.github.io/issues?state=open&per_page=100';
+
+  const section = (body, heading) => {
+    const escaped = heading.replace(/[.*+?^$()|[\\]\\]/g, '\\
+</script>
+</body>');
+    const match = body.match(new RegExp('### ' + escaped + '\\s*\\n+([\\s\\S]*?)(?=\\n### |$)', 'i'));
+    return match ? match[1].trim() : '';
+  };
+
+  const clean = value => value === '_No response_' ? '' : value;
+  const safeUrl = value => {
+    try {
+      const url = new URL(value);
+      return url.protocol === 'https:' ? url.href : '';
+    } catch {
+      return '';
+    }
+  };
+
+  try {
+    const response = await fetch(api, { headers: { Accept: 'application/vnd.github+json' } });
+    if (!response.ok) throw new Error('Unable to load');
+    const issues = await response.json();
+    const items = issues
+      .filter(issue => !issue.pull_request)
+      .filter(issue => issue.user && issue.user.login === 'ivanfrenchgo')
+      .filter(issue => issue.title.startsWith('[Work] '))
+      .map(issue => {
+        const documentField = clean(section(issue.body || '', 'Document'));
+        const documentMatch = documentField.match(/\\[[^\\]]+\\]\\((https:\\/\\/[^)]+)\\)/i);
+        const externalField = clean(section(issue.body || '', 'Optional external link'));
+        const externalMatch = externalField.match(/https:\\/\\/[^\\s)]+/i);
+        return {
+          title: issue.title.replace(/^\\[Work\\]\\s*/, ''),
+          category: clean(section(issue.body || '', 'Category')),
+          description: clean(section(issue.body || '', 'Short description')),
+          documentUrl: safeUrl(documentMatch ? documentMatch[1] : ''),
+          externalUrl: safeUrl(externalMatch ? externalMatch[0] : '')
+        };
+      });
+
+    container.replaceChildren();
+    if (!items.length) {
+      const empty = document.createElement('p');
+      empty.className = 'work-state';
+      empty.textContent = 'New work and research will be added here.';
+      container.appendChild(empty);
+      return;
+    }
+
+    items.forEach(item => {
+      const article = document.createElement('article');
+      article.className = 'work-item';
+
+      const title = document.createElement('h3');
+      title.textContent = item.title;
+      article.appendChild(title);
+
+      if (item.category) {
+        const meta = document.createElement('div');
+        meta.className = 'work-meta';
+        meta.textContent = item.category;
+        article.appendChild(meta);
+      }
+
+      if (item.description) {
+        const description = document.createElement('p');
+        description.textContent = item.description;
+        article.appendChild(description);
+      }
+
+      const linkUrl = item.documentUrl || item.externalUrl;
+      if (linkUrl) {
+        const link = document.createElement('a');
+        link.className = 'work-link';
+        link.href = linkUrl;
+        link.target = '_blank';
+        link.rel = 'noopener noreferrer';
+        link.textContent = item.documentUrl ? 'Read the document →' : 'View the work →';
+        article.appendChild(link);
+      }
+
+      container.appendChild(article);
+    });
+  } catch {
+    container.replaceChildren();
+    const error = document.createElement('p');
+    error.className = 'work-state';
+    error.textContent = 'Work and research could not be loaded right now.';
+    container.appendChild(error);
+  }
+}
+loadWork();
+
 </script>
 </body>
 </html>

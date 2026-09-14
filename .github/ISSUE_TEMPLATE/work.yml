@@ -1,0 +1,42 @@
+name: Add work or research
+description: Publish a document or project on Ivan French's website
+title: "[Work] "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Add the title after **[Work]** above. Complete the fields below and submit the form. The item will appear automatically on your website.
+
+        Everything submitted here is public. Keep the issue open while you want the item displayed; close it to remove it from the website.
+  - type: input
+    id: category
+    attributes:
+      label: Category
+      description: A short label, such as Research, Essay, AI Safety, or Technology.
+      placeholder: Research · AI Safety
+    validations:
+      required: true
+  - type: textarea
+    id: description
+    attributes:
+      label: Short description
+      description: Briefly explain what the work explores and why it matters.
+      placeholder: This paper explores...
+    validations:
+      required: true
+  - type: textarea
+    id: document
+    attributes:
+      label: Document
+      description: Drag and drop the PDF into this box and wait for the upload to finish. You can also paste a public link.
+      placeholder: Drag your PDF here
+    validations:
+      required: true
+  - type: input
+    id: external-link
+    attributes:
+      label: Optional external link
+      description: Add an HTTPS link if the work lives somewhere else.
+      placeholder: https://
+    validations:
+      required: false
