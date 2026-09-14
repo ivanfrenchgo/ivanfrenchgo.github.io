@@ -331,7 +331,7 @@ async function loadWork() {
         article.appendChild(description);
       }
 
-      const linkUrl = item.documentUrl || item.externalUrl || item.issueUrl;
+      const linkUrl = item.documentUrl ? 'document.html?src=' + encodeURIComponent(item.documentUrl) : (item.externalUrl || item.issueUrl);
       if (linkUrl) {
         const link = document.createElement('a');
         link.className = 'work-link';

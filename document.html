@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Document · Ivan French</title>
+<style>
+:root{--paper:#faf9f6;--ink:#1b1f24;--muted:#5f6a72;--rule:#e3e2da;--accent:#2f6f66}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:system-ui,-apple-system,"Segoe UI",sans-serif;display:flex;flex-direction:column}
+header{display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:.8rem 1.25rem;border-bottom:1px solid var(--rule)}
+a{color:var(--accent);text-decoration:none}
+a:hover{text-decoration:underline}
+.actions{display:flex;gap:1rem;font-size:.9rem}
+iframe{width:100%;flex:1;border:0;background:white}
+.message{max-width:42rem;margin:4rem auto;padding:0 1.5rem;color:var(--muted)}
+</style>
+</head>
+<body>
+<header>
+  <a href="/#work">← Back to Work &amp; Research</a>
+  <div class="actions"><a id="open-file" href="#" target="_blank" rel="noopener noreferrer">Open or download PDF</a></div>
+</header>
+<iframe id="pdf-frame" title="PDF document"></iframe>
+<p id="message" class="message" hidden>This document could not be displayed. Use “Open or download PDF” above.</p>
+<script>
+const source = new URLSearchParams(location.search).get('src');
+const frame = document.getElementById('pdf-frame');
+const openFile = document.getElementById('open-file');
+const message = document.getElementById('message');
+let valid = '';
+try {
+  const url = new URL(source);
+  const githubAttachment = url.protocol === 'https:' && url.hostname === 'github.com' && url.pathname.startsWith('/user-attachments/files/');
+  const localPdf = url.origin === location.origin && url.pathname.toLowerCase().endsWith('.pdf');
+  if (githubAttachment || localPdf) valid = url.href;
+} catch {}
+if (valid) {
+  frame.src = valid;
+  openFile.href = valid;
+} else {
+  frame.hidden = true;
+  openFile.hidden = true;
+  message.hidden = false;
+  message.textContent = 'The document link is invalid or unavailable.';
+}
+</script>
+</body>
+</html>
