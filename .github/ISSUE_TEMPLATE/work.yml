@@ -1,11 +1,11 @@
 name: Add work or research
 description: Publish a document or project on Ivan French's website
-title: "[Work] "
+title: ""
 body:
   - type: markdown
     attributes:
       value: |
-        Add the title after **[Work]** above. Complete the fields below and submit the form. The item will appear automatically on your website.
+        Write the title normally above, without adding a prefix. Complete the fields below and submit the form. The item will appear automatically on your website.
 
         Everything submitted here is public. Keep the issue open while you want the item displayed; close it to remove it from the website.
   - type: input

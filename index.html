@@ -284,7 +284,7 @@ async function loadWork() {
     const items = issues
       .filter(issue => !issue.pull_request)
       .filter(issue => issue.user && issue.user.login === 'ivanfrenchgo')
-      .filter(issue => issue.title.startsWith('[Work] '))
+      .filter(issue => /### Category\s*\n/i.test(issue.body || '') && /### Short description\s*\n/i.test(issue.body || ''))
       .map(issue => {
         const documentField = clean(section(issue.body || '', 'Document'));
         const documentMatch = documentField.match(/\[[^\]]+\]\((https:\/\/[^)]+)\)/i);
