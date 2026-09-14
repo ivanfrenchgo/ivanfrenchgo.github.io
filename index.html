@@ -268,6 +268,27 @@ async function loadWork() {
   };
 
   const clean = value => value === '_No response_' ? '' : value;
+  const shorten = value => {
+    const text = value.replace(/\s+/g, ' ').trim();
+    if (text.length <= 360) return text;
+    const clipped = text.slice(0, 357);
+    const boundary = clipped.lastIndexOf(' ');
+    return clipped.slice(0, boundary > 280 ? boundary : 357) + '…';
+  };
+  const fallbackDescription = body => {
+    const doc = new DOMParser().parseFromString(body || '', 'text/html');
+    const abstractHeading = [...doc.querySelectorAll('h1, h2, h3')]
+      .find(node => node.textContent.trim().toLowerCase() === 'abstract');
+    if (abstractHeading) {
+      let next = abstractHeading.nextElementSibling;
+      while (next && !next.textContent.trim()) next = next.nextElementSibling;
+      if (next) return shorten(next.textContent);
+    }
+    const text = doc.body.textContent
+      .replace(/\[[^\]]+\.pdf\]\(https?:\/\/[^)]+\)/gi, '')
+      .replace(/^###?\s+.*$/gm, '');
+    return shorten(text);
+  };
   const safeUrl = value => {
     try {
       const url = new URL(value);
@@ -284,17 +305,22 @@ async function loadWork() {
     const items = issues
       .filter(issue => !issue.pull_request)
       .filter(issue => issue.user && issue.user.login === 'ivanfrenchgo')
-      .filter(issue => /### Category\s*\n/i.test(issue.body || '') && /### Short description\s*\n/i.test(issue.body || ''))
+      .filter(issue => {
+        const body = issue.body || '';
+        const structured = /### Category\s*\n/i.test(body) && /### Short description\s*\n/i.test(body);
+        const attachedPdf = /\[[^\]]+\.pdf\]\(https:\/\/github\.com\/user-attachments\/[^)]+\.pdf(?:\?[^)]*)?\)/i.test(body);
+        return structured || attachedPdf;
+      })
       .map(issue => {
         const documentField = clean(section(issue.body || '', 'Document'));
         const documentMatch = documentField.match(/\[[^\]]+\]\((https:\/\/[^)]+)\)/i);
-        const attachmentMatch = (issue.body || '').match(/\[[^\]]+\]\((https:\/\/github\.com\/user-attachments\/[^)]+)\)/i);
+        const attachmentMatch = (issue.body || '').match(/\[[^\]]+\.pdf\]\((https:\/\/github\.com\/user-attachments\/[^)]+\.pdf(?:\?[^)]*)?)\)/i);
         const externalField = clean(section(issue.body || '', 'Optional external link'));
         const externalMatch = externalField.match(/https:\/\/[^\s)]+/i);
         return {
           title: issue.title.replace(/^\[Work\]\s*/, ''),
-          category: clean(section(issue.body || '', 'Category')),
-          description: clean(section(issue.body || '', 'Short description')),
+          category: clean(section(issue.body || '', 'Category')) || 'Research',
+          description: clean(section(issue.body || '', 'Short description')) || fallbackDescription(issue.body || ''),
           documentUrl: safeUrl(documentMatch ? documentMatch[1] : (attachmentMatch ? attachmentMatch[1] : '')),
           externalUrl: safeUrl(externalMatch ? externalMatch[0] : ''),
           issueUrl: safeUrl(issue.html_url || ''),
